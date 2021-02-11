@@ -27,7 +27,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                use: [{ loader: 'ts-loader' }],
+                loader: 'ts-loader',
             },
         ],
     },
@@ -44,7 +44,6 @@ module.exports = {
      */
     resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-        modules: [path.join(__dirname, '..', 'app'), 'node_modules'],
     },
 
     optimization: {

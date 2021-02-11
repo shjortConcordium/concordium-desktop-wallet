@@ -1,12 +1,9 @@
 import * as Knex from 'knex';
-import {
-    accountsTable,
-    identitiesTable,
-} from '../../constants/databaseNames.json';
+import databaseNames from '../../constants/databaseNames.json';
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(
-        accountsTable,
+        databaseNames.accountsTable,
         (table: Knex.TableBuilder) => {
             table.integer('accountNumber');
             table.string('name');
@@ -17,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
                 .unsigned()
                 .notNullable()
                 .references('id')
-                .inTable(identitiesTable)
+                .inTable(databaseNames.identitiesTable)
                 .index();
             table.string('credential');
             table.string('credentialDeploymentHash');
@@ -30,5 +27,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-    return knex.schema.dropTable(accountsTable);
+    return knex.schema.dropTable(databaseNames.accountsTable);
 }

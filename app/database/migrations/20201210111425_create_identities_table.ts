@@ -1,9 +1,9 @@
 import * as Knex from 'knex';
-import { identitiesTable } from '../../constants/databaseNames.json';
+import databaseNames from '../../constants/databaseNames.json';
 
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable(
-        identitiesTable,
+        databaseNames.identitiesTable,
         (table: Knex.TableBuilder) => {
             table.increments('id');
             table.string('name');
@@ -18,5 +18,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-    return knex.schema.dropTable(identitiesTable);
+    return knex.schema.dropTable(databaseNames.identitiesTable);
 }
