@@ -1,9 +1,6 @@
 import { Account } from '../utils/types';
 import knex from './knex';
-import {
-    accountsTable,
-    identitiesTable,
-} from '../constants/databaseNames.json';
+import dbNames from '../constants/databaseNames.json';
 
 /**
  * Returns all stored accounts
@@ -11,34 +8,37 @@ import {
  */
 export async function getAllAccounts(): Promise<Account[]> {
     return (await knex())
-        .table(accountsTable)
+        .table(dbNames.accountsTable)
         .join(
-            identitiesTable,
-            `${accountsTable}.identityId`,
+            dbNames.identitiesTable,
+            `${dbNames.accountsTable}.identityId`,
             '=',
-            `${identitiesTable}.id`
+            `${dbNames.identitiesTable}.id`
         )
         .select(
-            `${accountsTable}.*`,
-            `${identitiesTable}.name as identityName`
+            `${dbNames.accountsTable}.*`,
+            `${dbNames.identitiesTable}.name as identityName`
         );
 }
 
 export async function insertAccount(account: Account | Account[]) {
-    return (await knex())(accountsTable).insert(account);
+    return (await knex())(dbNames.accountsTable).insert(account);
 }
 
 export async function updateAccount(
     accountName: string,
     updatedValues: Record<string, unknown>
 ) {
-    return (await knex())(accountsTable)
+    return (await knex())(dbNames.accountsTable)
         .where({ name: accountName })
         .update(updatedValues);
 }
 
 export async function findAccounts(condition: Record<string, unknown>) {
-    return (await knex()).select().table(accountsTable).where(condition);
+    return (await knex())
+        .select()
+        .table(dbNames.accountsTable)
+        .where(condition);
 }
 
 export async function getAccountsOfIdentity(

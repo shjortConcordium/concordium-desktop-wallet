@@ -27,7 +27,6 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                include: /app/,
                 use: [{ loader: 'ts-loader' }],
             },
         ],
@@ -49,8 +48,12 @@ module.exports = {
     },
 
     optimization: {
-        namedModules: true,
-        noEmitOnErrors: false,
+        moduleIds: 'named',
+        emitOnErrors: true,
+    },
+
+    experiments: {
+        asyncWebAssembly: true,
     },
 
     plugins: [

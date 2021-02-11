@@ -1,6 +1,6 @@
 import { MultiSignatureTransaction } from '../utils/types';
 import knex from './knex';
-import { multiSignatureProposalTable } from '../constants/databaseNames.json';
+import dbNames from '../constants/databaseNames.json';
 
 /**
  * Function for inserting a multi signature transaction proposal
@@ -8,7 +8,7 @@ import { multiSignatureProposalTable } from '../constants/databaseNames.json';
  */
 export async function insert(transaction: Partial<MultiSignatureTransaction>) {
     return (await knex())
-        .table(multiSignatureProposalTable)
+        .table(dbNames.multiSignatureProposalTable)
         .insert(transaction);
 }
 
@@ -18,7 +18,7 @@ export async function insert(transaction: Partial<MultiSignatureTransaction>) {
 export async function updateEntry(
     multiSigTransaction: MultiSignatureTransaction
 ) {
-    return (await knex())(multiSignatureProposalTable)
+    return (await knex())(dbNames.multiSignatureProposalTable)
         .where({ id: multiSigTransaction.id })
         .update(multiSigTransaction);
 }
@@ -27,5 +27,5 @@ export async function updateEntry(
  * Function for reading all items in the multi signature transaction proposal table.
  */
 export async function getAll(): Promise<MultiSignatureTransaction[]> {
-    return (await knex()).select().table(multiSignatureProposalTable);
+    return (await knex()).select().table(dbNames.multiSignatureProposalTable);
 }

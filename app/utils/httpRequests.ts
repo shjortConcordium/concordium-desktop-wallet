@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as http from 'http';
 import urls from '../constants/urls.json';
-import { walletProxytransactionLimit } from '../constants/externalConstants.json';
+import externalConstants from '../constants/externalConstants.json';
 import { Global, TransferTransaction, IncomingTransaction } from './types';
 
 const walletProxy = axios.create({
@@ -52,7 +52,7 @@ export async function getTransactions(
     id = 0
 ): Promise<IncomingTransaction[]> {
     const response = await walletProxy.get(
-        `/v0/accTransactions/${address}?limit=${walletProxytransactionLimit}&from=${id}`
+        `/v0/accTransactions/${address}?limit=${externalConstants.walletProxytransactionLimit}&from=${id}`
     );
     const { transactions, count, limit } = response.data;
     if (count === limit) {

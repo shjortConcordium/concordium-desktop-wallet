@@ -1,6 +1,6 @@
 import { AddressBookEntry } from '../utils/types';
 import knex from './knex';
-import { addressBookTable } from '../constants/databaseNames.json';
+import dbNames from '../constants/databaseNames.json';
 
 function sanitizeAddressBookEntry(e: AddressBookEntry): AddressBookEntry {
     return { ...e, readOnly: Boolean(e.readOnly) };
@@ -9,27 +9,27 @@ function sanitizeAddressBookEntry(e: AddressBookEntry): AddressBookEntry {
 export async function getAddressBook(): Promise<AddressBookEntry[]> {
     return (await knex())
         .select()
-        .table(addressBookTable)
+        .table(dbNames.addressBookTable)
         .then((e) => e.map(sanitizeAddressBookEntry));
 }
 
 export async function insertEntry(
     entry: AddressBookEntry | AddressBookEntry[]
 ) {
-    return (await knex())(addressBookTable).insert(entry);
+    return (await knex())(dbNames.addressBookTable).insert(entry);
 }
 
 export async function updateEntry(
     name: string,
     updatedValues: Partial<AddressBookEntry>
 ) {
-    return (await knex())(addressBookTable)
+    return (await knex())(dbNames.addressBookTable)
         .where({ name })
         .update(updatedValues);
 }
 
 export async function removeEntry(entry: AddressBookEntry) {
-    return (await knex())(addressBookTable).where(entry).del();
+    return (await knex())(dbNames.addressBookTable).where(entry).del();
 }
 
 export async function findEntries(
@@ -37,7 +37,7 @@ export async function findEntries(
 ): Promise<AddressBookEntry[]> {
     return (await knex())
         .select()
-        .table(addressBookTable)
+        .table(dbNames.addressBookTable)
         .where(condition)
         .then((e) => e.map(sanitizeAddressBookEntry));
 }

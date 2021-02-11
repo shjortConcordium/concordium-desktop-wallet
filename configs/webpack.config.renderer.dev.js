@@ -52,8 +52,8 @@ module.exports = merge(baseConfig, {
         'core-js',
         'regenerator-runtime/runtime',
         ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
-        `webpack-dev-server/client?http://localhost:${port}/`,
-        'webpack/hot/only-dev-server',
+        // `webpack-dev-server/client?http://localhost:${port}/`,
+        // 'webpack/hot/only-dev-server',
         require.resolve('../app/index.tsx'),
     ],
 
