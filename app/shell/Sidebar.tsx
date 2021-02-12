@@ -39,6 +39,9 @@ export default function Routes() {
         icon: 'settings',
     });
 
+    // eslint-disable-next-line promise/catch-or-return
+    import('../../pkg').then((m) => console.log(m.decrypt_amounts_ext));
+
     return (
         <Menu icon="labeled" vertical borderless fixed="left">
             {sideBarElements.map((member) => (
