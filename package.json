@@ -28,6 +28,7 @@
     "start:prod": "cross-env NODE_ENV=production electron ./app/main.prod.js",
     "start:dev": "cross-env START_HOT=1 NODE_ENV=development electron ./app/main.dev.js",
     "start:dev-debug": "yarn start:dev --inspect=5858 --remote-debugging-port=9223",
+    "build-renderer-dev": "cross-env NODE_ENV=development webpack --config configs/webpack.config.renderer.dev.js --color --progress",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack serve --config configs/webpack.config.renderer.dev.js --color --progress",
     "test": "cross-env jest",
     "test-tsc": "yarn tsc --noEmit",
