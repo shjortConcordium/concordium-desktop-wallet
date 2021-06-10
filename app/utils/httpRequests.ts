@@ -71,10 +71,12 @@ interface GetTransactionsOutput {
 
 export async function getTransactions(
     address: string,
-    id = 0
+    id = 0,
+    descending = true
 ): Promise<GetTransactionsOutput> {
+    const order = descending ? 'descending' : 'ascending';
     const response = await walletProxy.get(
-        `/v0/accTransactions/${address}?limit=${walletProxytransactionLimit}&from=${id}&includeRawRejectReason`
+        `/v0/accTransactions/${address}?limit=${walletProxytransactionLimit}&from=${id}&includeRawRejectReason&order=${order}`
     );
     const { transactions, count, limit } = response.data;
     return { transactions, full: count === limit };
