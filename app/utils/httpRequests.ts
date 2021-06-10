@@ -72,11 +72,17 @@ interface GetTransactionsOutput {
 export async function getTransactions(
     address: string,
     id = 0,
-    descending = true
+    descending = false,
+    size = walletProxytransactionLimit
 ): Promise<GetTransactionsOutput> {
     const order = descending ? 'descending' : 'ascending';
+    /**
+     * API takes from "id" and up when called with ascending ordering, and from "id" and down when called with descending ordering.
+     */
+    const from = descending ? '' : id;
+
     const response = await walletProxy.get(
-        `/v0/accTransactions/${address}?limit=${walletProxytransactionLimit}&from=${id}&includeRawRejectReason&order=${order}`
+        `/v0/accTransactions/${address}?limit=${size}&from=${from}&includeRawRejectReason&order=${order}`
     );
     const { transactions, count, limit } = response.data;
     return { transactions, full: count === limit };
