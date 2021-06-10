@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 import {
@@ -34,7 +34,7 @@ export default function AccountView() {
     const dispatch = useDispatch();
     const account = useSelector(chosenAccountSelector);
     const accountInfo = useSelector(chosenAccountInfoSelector);
-    const [controller] = useState(new AbortController());
+    const controller = useMemo(() => new AbortController(), []);
 
     useEffect(() => {
         if (account) {
@@ -59,8 +59,7 @@ export default function AccountView() {
         if (
             account &&
             account.status === AccountStatus.Confirmed &&
-            controller.isReady &&
-            !controller.isAborted
+            controller.isReady
         ) {
             controller.start();
             updateTransactions(dispatch, account, controller);
@@ -74,6 +73,7 @@ export default function AccountView() {
         account?.address,
         accountInfo?.accountAmount,
         account?.status,
+        controller,
         controller.isAborted,
     ]);
 
