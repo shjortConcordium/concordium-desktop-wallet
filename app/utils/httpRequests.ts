@@ -64,28 +64,45 @@ export function getResponseBody(
     });
 }
 
+export enum GetTransactionsOrder {
+    Asc = 'asc',
+    Desc = 'desc',
+}
+
+export enum GetTransactionsIncludeRewards {
+    All = 'all',
+    None = 'none',
+    AllButFinalization = 'allButFinalization',
+}
+
 interface GetTransactionsOutput {
     transactions: IncomingTransaction[];
     full: boolean;
 }
 
+/**
+ * Fetches transactions for an address.
+ *
+ * @param address Account address to get transactions for
+ * @param from A transaction ID. If the order is ascending, get transactions with higher ids than this; if the order is descending, get transactions with lower ids.
+ * @param order Either descending or ascending order (sorted by transaction ID).
+ * @param limit Number of transactions to get. Max is 1000.
+ * @param includeRewards Specifies which rewards (if any) to include in transactions.
+ *
+ * @returns List of transactions to/from address.
+ */
 export async function getTransactions(
     address: string,
-    id = 0,
-    descending = false,
-    size = walletProxytransactionLimit
+    from?: number,
+    order = GetTransactionsOrder.Asc,
+    limit = walletProxytransactionLimit,
+    includeRewards: GetTransactionsIncludeRewards = GetTransactionsIncludeRewards.All
 ): Promise<GetTransactionsOutput> {
-    const order = descending ? 'descending' : 'ascending';
-    /**
-     * API takes from "id" and up when called with ascending ordering, and from "id" and down when called with descending ordering.
-     */
-    const from = descending ? '' : id;
-
     const response = await walletProxy.get(
-        `/v0/accTransactions/${address}?limit=${size}&from=${from}&includeRawRejectReason&order=${order}`
+        `/v0/accTransactions/${address}?limit=${limit}&from=${from}&includeRawRejectReason&order=${order}&includeRewards=${includeRewards}`
     );
-    const { transactions, count, limit } = response.data;
-    return { transactions, full: count === limit };
+    const { transactions, count, limit: size } = response.data;
+    return { transactions, full: count === size };
 }
 
 export async function getIdentityProviders() {
