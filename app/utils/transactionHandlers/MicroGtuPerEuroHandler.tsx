@@ -49,8 +49,8 @@ export default class MicroGtuPerEuroHandler
         } = blockSummary.updates.keys.level2Keys.microGTUPerEuro;
 
         const reduced = getReducedExchangeRate({
-            denominator: BigInt(microGtuPerEuroRate.denominator),
-            numerator: BigInt(microGtuPerEuroRate.numerator),
+            denominator: BigInt(microGtuPerEuroRate.denominator ?? ''),
+            numerator: BigInt(microGtuPerEuroRate.numerator ?? ''),
         });
 
         return createUpdateMultiSignatureTransaction(

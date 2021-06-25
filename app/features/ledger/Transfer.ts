@@ -256,7 +256,7 @@ async function signEncryptedTransfer(
         p2,
         Buffer.concat([
             Buffer.from(transaction.payload.transferAmount, 'hex'),
-            encodeWord64(BigInt(transaction.payload.index)),
+            encodeWord64(BigInt(transaction.payload.index ?? '')),
             encodeWord16(proof.length),
         ])
     );

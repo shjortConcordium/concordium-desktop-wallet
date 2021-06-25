@@ -48,8 +48,8 @@ export default class EuroPerEnergyHandler
         } = blockSummary.updates.keys.level2Keys.euroPerEnergy;
 
         const reduced = getReducedExchangeRate({
-            denominator: BigInt(euroPerEnergyRate.denominator),
-            numerator: BigInt(euroPerEnergyRate.numerator),
+            denominator: BigInt(euroPerEnergyRate.denominator ?? ''),
+            numerator: BigInt(euroPerEnergyRate.numerator ?? ''),
         });
 
         return createUpdateMultiSignatureTransaction(

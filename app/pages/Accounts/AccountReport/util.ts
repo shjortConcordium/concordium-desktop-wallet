@@ -23,11 +23,11 @@ function calculatePublicBalanceChange(
         TransactionKindString.TransferToPublic === transaction.transactionKind
     ) {
         return (
-            BigInt(transaction.subtotal) - BigInt(transaction.cost || 0)
+            BigInt(transaction.subtotal ?? '') - BigInt(transaction.cost || 0)
         ).toString();
     }
     return (
-        -BigInt(transaction.subtotal) - BigInt(transaction.cost || 0)
+        -BigInt(transaction.subtotal ?? '') - BigInt(transaction.cost || 0)
     ).toString();
 }
 

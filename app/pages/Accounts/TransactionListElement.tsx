@@ -40,7 +40,7 @@ const isGreen = (
     if (TransactionKindString.TransferToPublic === kind) {
         return (
             !viewingShielded &&
-            BigInt(transaction.subtotal) > BigInt(transaction.cost)
+            BigInt(transaction.subtotal ?? '') > BigInt(transaction.cost ?? '')
         );
     }
     return !isOutgoing;
@@ -135,21 +135,21 @@ function parseAmount(transaction: TransferTransaction, isOutgoing: boolean) {
             ) {
                 // A transfer to public is the only transaction, where we pay a cost and receive gtu on the public balance.
                 return buildOutgoingAmountStrings(
-                    -BigInt(transaction.subtotal),
+                    -BigInt(transaction.subtotal ?? ''),
                     cost
                 );
             }
 
             return buildOutgoingAmountStrings(
-                BigInt(transaction.subtotal),
+                BigInt(transaction.subtotal ?? ''),
                 cost
             );
         }
         // incoming transaction:
-        return buildCostFreeAmountString(BigInt(transaction.subtotal));
+        return buildCostFreeAmountString(BigInt(transaction.subtotal ?? ''));
     }
     if (isRewardKind(transaction.transactionKind)) {
-        return buildCostFreeAmountString(BigInt(transaction.subtotal));
+        return buildCostFreeAmountString(BigInt(transaction.subtotal ?? ''));
     }
     return buildCostString(BigInt(transaction.cost || '0'));
 }

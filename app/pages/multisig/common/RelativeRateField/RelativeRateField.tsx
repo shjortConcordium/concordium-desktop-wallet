@@ -80,8 +80,8 @@ export function RelativeRateField({
         try {
             const r = fromExchangeRate(
                 getReducedExchangeRate({
-                    numerator: BigInt(value.numerator),
-                    denominator: BigInt(value.denominator),
+                    numerator: BigInt(value.numerator ?? ''),
+                    denominator: BigInt(value.denominator ?? ''),
                 })
             );
 

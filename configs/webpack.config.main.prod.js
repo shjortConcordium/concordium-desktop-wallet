@@ -16,7 +16,7 @@ CheckNodeEnv('production');
 DeleteSourceMaps();
 
 module.exports = merge(baseConfig, {
-    devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
+    devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : undefined,
 
     mode: 'production',
 

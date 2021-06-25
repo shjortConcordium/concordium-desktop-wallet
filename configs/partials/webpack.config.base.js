@@ -7,6 +7,8 @@ const path = require('path');
 const webpack = require('webpack');
 const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+
 const { dependencies: externals } = require('../../app/package.json');
 
 const extensions = ['.js', '.jsx', '.json', '.ts', '.tsx'];
@@ -40,18 +42,7 @@ module.exports = {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 include: /app/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            plugins: [
-                                '@babel/plugin-proposal-optional-chaining',
-                                '@babel/plugin-proposal-nullish-coalescing-operator',
-                            ],
-                        },
-                    },
-                    'ts-loader',
-                ],
+                loader: 'ts-loader',
             },
         ],
     },
@@ -59,7 +50,10 @@ module.exports = {
     output: {
         path: path.join(__dirname, '..', 'app'),
         // https://github.com/webpack/webpack/issues/1114
-        libraryTarget: 'commonjs2',
+        library: {
+            name: 'output_library',
+            type: 'commonjs2',
+        },
         webassemblyModuleFilename: 'crypto.wasm',
     },
 
@@ -77,8 +71,12 @@ module.exports = {
     },
 
     optimization: {
-        namedModules: true,
-        noEmitOnErrors: false,
+        moduleIds: 'named',
+        emitOnErrors: true,
+    },
+
+    experiments: {
+        syncWebAssembly: true,
     },
 
     plugins: [
@@ -93,5 +91,6 @@ module.exports = {
             /\.\.\/migrations/,
             '../util/noop.js'
         ),
+        new NodePolyfillPlugin(),
     ],
 };
