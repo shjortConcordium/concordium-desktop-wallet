@@ -44,7 +44,7 @@ export default function HomePage() {
     return (
         <PageLayout>
             <PageLayout.Header>
-                <h1>Concordium</h1>
+                <h1>Concordium!</h1>
             </PageLayout.Header>
             <Switch>
                 <Route

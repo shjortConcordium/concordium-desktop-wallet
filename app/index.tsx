@@ -20,6 +20,7 @@ window.addListener.openRoute((_, route: string) => {
 window.addListener.logFromMain((_, ...args: any[]) => console.log(...args));
 
 window.autoUpdate.onUpdateAvailable((info: UpdateInfo) => {
+    console.log(info);
     store.dispatch(triggerUpdateNotification(info.version));
 });
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
